@@ -14,6 +14,7 @@ import EmberObject from '../../lib/system/object';
 import EmberArray from '../../lib/mixins/array';
 import { A as emberA } from '../../lib/mixins/array';
 import { moduleFor, AbstractTestCase, runLoopSettled } from 'internal-test-helpers';
+import { DEBUG } from '@glimmer/env';
 
 /*
   Implement a basic fake mutable array.  This validates that any non-native
@@ -324,9 +325,11 @@ moduleFor(
         isDone: false,
       });
 
-      assert.throwsAssertion(() => {
-        addObserver(ary, '@each.isDone', observerObject, 'wasCalled');
-      }, /When using @each to observe the array/);
+      if (DEBUG) {
+        expectAssertion(() => {
+          addObserver(ary, '@each.isDone', observerObject, 'wasCalled');
+        }, /When using @each to observe the array/);
+      }
 
       await runLoopSettled();
       assert.equal(called, 0, 'not calls observer when object is pushed');

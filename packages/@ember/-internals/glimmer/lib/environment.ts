@@ -59,6 +59,12 @@ export class EmberEnvironmentExtra {
       this.debugRenderTree.commit();
     }
   }
+
+  cleanup() {
+    if (ENV._DEBUG_RENDER_TREE) {
+      this._debugRenderTree = new DebugRenderTree();
+    }
+  }
 }
 
 export class EmberEnvironmentDelegate implements EnvironmentDelegate<EmberEnvironmentExtra> {
@@ -120,6 +126,10 @@ export class EmberEnvironmentDelegate implements EnvironmentDelegate<EmberEnviro
 
   onTransactionCommit() {
     this.extra.commit();
+  }
+
+  cleanup() {
+    this.extra.cleanup();
   }
 }
 

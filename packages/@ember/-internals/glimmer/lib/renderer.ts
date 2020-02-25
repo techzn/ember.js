@@ -394,6 +394,7 @@ export abstract class Renderer {
       return;
     }
     this._destroyed = true;
+    this._runtime.env.extra.cleanup();
     this._clearAllRoots();
   }
 
